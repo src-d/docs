@@ -1,0 +1,15 @@
+-include $(DOCS_PATH)/Makefile.vars
+
+SERVE ?= false
+
+docs:
+	$(MAKE) -C $(DOCS_PATH) docs \
+		LANGUAGES=$(LANGUAGES) \
+		PYTHON_MAIN_DIR=$(PYTHON_MAIN_DIR) \
+		HOST_NAME=$(HOST_NAME) \
+		VERSION_NAME=$(VERSION_NAME) \
+		BASE_URL=$(BASE_URL) \
+		DESTINATION_PATH=$(DESTINATION_PATH) \
+		SOURCES=$(shell pwd) \
+		FORCE_GENERATION=true \
+		SERVE=$(SERVE)
