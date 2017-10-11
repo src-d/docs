@@ -34,3 +34,12 @@ export VERSION_NAME=v.4;
 SERVE=true make docs-site-serve;
 ```
 and go to http://go-git.sourced.tech:8585
+
+## Using Docker
+
+You can launch a docsrv instance running
+```
+make build;
+docker build -t quay.io/srcd/docs .;
+docker run --rm --detach --name doc-srcd-cont --publish 9090:9090 --env DEBUG_LOG=true --volume /projects/src/github.com/src-d/ci-shared/logs:/var/log/docsrv quay.io/srcd/docs;
+```
