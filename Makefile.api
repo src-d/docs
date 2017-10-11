@@ -1,0 +1,82 @@
+# Default shell
+SHELL := /bin/bash
+
+# internal variables
+api_docs_path := $(DESTINATION_PATH)/api
+sphinx_path := $(SHARED_CONF_PATH)/sphinx
+doxygen_path := $(SHARED_CONF_PATH)/doxygen
+
+# creates the generated-api for current repo
+docs-api:
+	@if [[ -z "$(LANGUAGES)" ]]; then \
+		echo 'There are no languages defined, not generating API docs.'; \
+	else \
+		mkdir -p "$(api_docs_path)"; \
+		echo "Generating api docs for languages : $(LANGUAGES)"; \
+		for lang in $(LANGUAGES); do \
+			LANG_TASK="docs-api-$$lang"; \
+			echo "Generating API docs for language '$$lang'..."; \
+			$(MAKE) -s $$LANG_TASK; \
+		done; \
+	fi;
+
+docs-api-go:
+	@echo 'Generated Go API docs. Nothing to do.';
+
+docs-api-python:
+	@cd $(SOURCES) && \
+	if [[ -r "$(PYTHON_MAIN_DIR)/requirements.txt" ]]; \
+	then \
+		pip3 install -r $(PYTHON_MAIN_DIR)/requirements.txt; \
+	fi; \
+	sphinx-apidoc --full --doc-author 'source{d}' \
+		--doc-version "$(VERSION_NAME)" --doc-release "$(VERSION_NAME)" \
+		--private --module-first --append-syspath --output-dir __api_py \
+		--doc-project "$(REPOSITORY_NAME)" "$(PYTHON_MAIN_DIR)" && \
+	cd __api_py && \
+	cat "$(sphinx_path)/conf.py" \
+		| sed "s/@PROJECT_NAME/$(REPOSITORY_NAME)/g" \
+		| sed "s/@USER_NAME/$(REPOSITORY_OWNER)/g" \
+		>> conf.py && \
+	cp "$(sphinx_path)/custom.css" _static && \
+	cp "$(sphinx_path)/logo-blue.svg" _static && \
+	make html && \
+	cd .. && \
+	mv __api_py/_build/html "$(api_docs_path)/python" && \
+	echo 'Generated API docs for Python.';
+
+docs-api-cpp:
+	@cd $(SOURCES) && \
+	sphinx-apidoc --full --doc-author 'source{d}' \
+		--doc-version "$(VERSION_NAME)" --doc-release "$(VERSION_NAME)" \
+		--private --module-first --append-syspath --output-dir __api_cpp \
+		--doc-project "$(REPOSITORY_NAME)" . && \
+	cat "$(doxygen_path)/Doxyfile" \
+		| sed "s/@PROJECT/$(REPOSITORY_NAME)/g" \
+		> Doxyfile && \
+	doxygen Doxyfile && \
+	cd __api_cpp && \
+	rm -rf *.rst && \
+	cat "$(sphinx_path)/conf.py" \
+		| sed "s/@PROJECT_NAME/$(REPOSITORY_NAME)/g" \
+		| sed "s/@USER_NAME/$(REPOSITORY_OWNER)/g" \
+		>> conf.py && \
+	cat "$(sphinx_path)/breathe_conf.py" \
+		| sed "s/@PROJECT_NAME/$(REPOSITORY_NAME)/g" \
+		>> conf.py && \
+	cat "$(sphinx_path)/breathe_index.rst" \
+		| sed "s/@PROJECT_NAME/$(REPOSITORY_NAME)/g" \
+		> index.rst && \
+	cp "$(sphinx_path)/custom.css" _static && \
+	cp "$(sphinx_path)/logo-blue.svg" _static && \
+	make html && \
+	cd .. && \
+	mv __api_cpp/_build/html "$(api_docs_path)/cpp" && \
+	echo 'Generated API docs for C++.';
+
+docs-api-scala:
+	@cd $(SOURCES) && \
+	echo "target in Compile in doc := baseDirectory.value / \"__api_scala\"" >> build.sbt && \
+	sbt doc && \
+	mv __api_scala "$(api_docs_path)/scala" && \
+	echo 'Generated API docs for Scala.';
