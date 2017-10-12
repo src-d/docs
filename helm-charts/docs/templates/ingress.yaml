@@ -1,4 +1,3 @@
-{{- if .Values.ingress.enabled -}}
 {{- $serviceName := include "fullname" . -}}
 {{- $servicePort := .Values.service.externalPort -}}
 apiVersion: extensions/v1beta1
@@ -14,19 +13,23 @@ metadata:
     {{- range $key, $value := .Values.ingress.annotations }}
       {{ $key }}: {{ $value | quote }}
     {{- end }}
+      kubernetes.io/ingress.global-static-ip-name: {{ required "Missing .Values.ingress.globalStaticIpName" .Values.ingress.globalStaticIpName }}
 spec:
   rules:
-    {{- range $host := .Values.ingress.hosts }}
+    {{- range $host :=  required "Missing .Values.ingress.hosts" .Values.ingress.hosts }}
     - host: {{ $host }}
       http:
         paths:
-          - path: /
+          - path: /*
             backend:
               serviceName: {{ $serviceName }}
               servicePort: {{ $servicePort }}
     {{- end -}}
   {{- if .Values.ingress.tls }}
   tls:
-{{ toYaml .Values.ingress.tls | indent 4 }}
-  {{- end -}}
-{{- end -}}
+    - secretName: "{{ template "fullname" . }}-tls"
+      hosts:
+      {{- range $host :=  required "Missing .Values.ingress.hosts" .Values.ingress.hosts }}
+        - {{ $host }}
+      {{- end }}
+  {{- end }}
