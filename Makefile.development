@@ -1,0 +1,52 @@
+# Default shell
+SHELL := /bin/bash
+
+# Conf vars
+GITHUB_API_KEY ?=
+WWW_PATH ?= /var/www
+LOGS ?= true
+
+#vars
+docker_container_name := doc-srcd-cont
+docker_image_name := quay.io/srcd/docs
+docker_shell := /bin/bash
+caddy_internal_port := 9090
+
+#tools
+docker_run := docker run --rm --detach
+docker_build := docker build -t
+docker_logs := docker logs --follow
+docker_stop := docker stop
+docker_tag := docker tag
+docker_access := docker exec -it
+git_last_commit := $(shell git show --format="%h" --no-patch)
+git_modified = $(shell git status --short)
+
+develop-run: build
+	$(MAKE) develop-stop || true;
+	$(docker_build) $(docker_image_name) .;
+	$(docker_run) \
+		--name $(docker_container_name) \
+		--publish $(caddy_internal_port):$(caddy_internal_port) \
+		--env DEBUG_LOG=$(LOGS) \
+		--env GITHUB_API_KEY=$(GITHUB_API_KEY) \
+		$(docker_image_name);
+
+develop-run-and-access: develop-run
+	$(docker_access) $(docker_container_name) $(docker_shell);
+
+develop-stop:
+	$(docker_stop) $(docker_container_name);
+
+develop-logs:
+	$(docker_logs) $(docker_container_name);
+
+develop-tag-last:
+	@if [[ -z "$(git_modified)" ]]; then \
+		$(MAKE) develop-run && \
+		$(docker_tag) $(docker_image_name):latest $(docker_image_name):$(git_last_commit) && \
+		echo "New image created '$(docker_image_name):$(git_last_commit);'"; \
+	else \
+		echo "error. it can not be tagged an image bein in a dirty working state" \
+		exit 1; \
+	fi;
