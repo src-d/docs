@@ -24,7 +24,7 @@ clean-build:
 	$(REMOVE) bin $(SHARED_PATH)
 
 ## compiles the config parser
-build: build-self build-config-parser build-errors
+build: build-config-parser build-self build-errors
 
 # copies itself to the shared dir
 build-self:

@@ -34,5 +34,6 @@ RUN apk add --no-cache doxygen && \
 
 COPY .shared /etc/shared
 COPY .shared/errors /var/www/public/errors
-COPY conf/config.toml /etc/docsrv/conf.d/config.toml
-COPY conf/entrypoint.sh .
+COPY .shared/.docs/conf/config.toml /etc/docsrv/conf.d/config.toml
+COPY .shared/.docs/conf/entrypoint.sh .
+COPY .shared/.docs/Caddyfile /etc/Caddyfile
