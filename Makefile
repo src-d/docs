@@ -5,6 +5,7 @@ SHELL := /bin/bash
 -include Makefile.vars
 -include Makefile.api
 -include Makefile.docs
+-include Makefile.development
 
 # commands
 MKDIR := mkdir -p
