@@ -1,3 +1,7 @@
+["spark-api.sourced.tech"]
+  repository = "src-d/spark-api"
+  min-version = "v0.0.11"
+
 ["enry.sourced.tech"]
   repository = "src-d/enry"
   min-version = "v1.5.2"
