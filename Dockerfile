@@ -34,8 +34,8 @@ RUN apk add --no-cache doxygen && \
     pip3 install alabaster --no-cache-dir && \
     pip3 install breathe --no-cache-dir
 
-COPY .shared /etc/shared
-COPY .shared/errors /var/www/public/errors
-COPY .shared/.docs/conf/config.toml /etc/docsrv/conf.d/config.toml
-COPY .shared/.docs/conf/entrypoint.sh .
-COPY .shared/.docs/Caddyfile /etc/Caddyfile
+COPY .docsrv-resources /etc/shared
+COPY .docsrv-resources/errors /var/www/public/errors
+COPY .docsrv-resources/.docs/conf/config.toml /etc/docsrv/conf.d/config.toml
+COPY .docsrv-resources/.docs/conf/entrypoint.sh .
+COPY .docsrv-resources/.docs/Caddyfile /etc/Caddyfile
