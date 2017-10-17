@@ -9,13 +9,33 @@
                 * errors/500/
         }
 
-        rewrite / { 
+        rewrite /healthcheck {
+                to /healthcheck
+        }
+
+        rewrite / {
                 if {path} is /versions.json
                 to /proxy{path}
         }
 
-        rewrite /healthcheck {
-                to errors/favicon.ico
+        rewrite / {
+                regexp  ^/([^/]+)/README.md
+                to {hostonly}/{1}/readme/ /proxy{path}
+        }
+
+        rewrite / {
+                regexp  ^/([^/]+)/LICENSE
+                to {hostonly}/{1}/license/ /proxy{path}
+        }
+
+        rewrite / {
+                regexp  /([^/]+)/_tutorials(.*)
+                to /{1}/tutorials/{2} /proxy{path}
+        }
+
+        rewrite / {
+                regexp  /([^/]+)/_examples(.*)
+                to /{1}/examples/{2} /proxy{path}
         }
 
         rewrite / {

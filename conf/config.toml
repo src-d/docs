@@ -1,19 +1,4 @@
-["go-git.sourced.tech"]
-  repository = "dpordomingo/go-git"
-  min-version = "v4.0.0"
-
-["kmcuda.sourced.tech"]
-  repository = "dpordomingo/kmcuda"
-  min-version = "v6.2.1"
-
-["docsrv.sourced.tech"]
-  repository = "dpordomingo/docsrv"
-  min-version = "v0.1"
-
-["spark-api.sourced.tech"]
-  repository = "dpordomingo/spark-api"
-  min-version = "v1.0.0"
-
-["bblf.sh"]
-  repository = "bblfsh/bblfshd"
-  min-version = "v2.0.0"
+["enry.sourced.tech"]
+  repository = "dpordomingo/enry"
+  min-version = "v1.5.2"
+  

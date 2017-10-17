@@ -32,8 +32,10 @@ develop-run: build
 		--env GITHUB_API_KEY=$(GITHUB_API_KEY) \
 		$(docker_image_name);
 
-develop-run-and-access: develop-run
+develop-access:
 	$(docker_access) $(docker_container_name) $(docker_shell);
+
+develop-run-and-access: develop-run develop-access
 
 develop-stop:
 	$(docker_stop) $(docker_container_name);
