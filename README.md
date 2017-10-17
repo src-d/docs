@@ -1,8 +1,25 @@
 # Docummentation site generator
 
+**Docs** serves the source{d} documentation sites using our common global service [docsrv](https://github.com/src-d/docsrv)
+
+To do so, all projects being served by docs need to follow the rules given by [_tutorials](_tutorials)
+
+## Launch it locally with docker
+
+You can launch a docsrv container instance with the prod configuration running:
+```shell
+make develop-run;
+```
+And then go to a project site:
+
+[http://project-host-name:9090](http://project-host-name:9090)
+
+
+## For development purposes
+
 It can be generated &ndash;and served&ndash; a _landing-like site_, containing the documentation for a project located under `<sources_path>`, running:
 
-```
+```shell
 cd <sources_path>;
 
 # Env vars that would be defined by docsrv if it would be ran through that service
@@ -25,7 +42,7 @@ To serve the go-git documentation you need to have:
 - an entry in the `/etc/hosts` like the following:<br />
 ```127.0.0.1    go-git.sourced.tech```
 
-```
+```shell
 cd $GOSRC/gopkg.in/src-d/go-git.v4;
 
 export HOST_NAME=go-git.sourced.tech;
@@ -34,12 +51,3 @@ export VERSION_NAME=v.4;
 SERVE=true make docs-site-serve;
 ```
 and go to http://go-git.sourced.tech:8585
-
-## Using Docker
-
-You can launch a docsrv instance running
-```
-make build;
-docker build -t quay.io/srcd/docs .;
-docker run --rm --detach --name doc-srcd-cont --publish 9090:9090 --env DEBUG_LOG=true --volume /projects/src/github.com/src-d/ci-shared/logs:/var/log/docsrv quay.io/srcd/docs;
-```
