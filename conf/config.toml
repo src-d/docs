@@ -1,4 +1,4 @@
-["spark-api.sourced.tech"]
+["engine.sourced.tech"]
   repository = "src-d/spark-api"
   min-version = "v0.0.11"
 
@@ -6,7 +6,7 @@
   repository = "src-d/enry"
   min-version = "v1.5.2"
 
-["go-siva.sourced.tech"]
+["siva.sourced.tech"]
   repository = "src-d/go-siva"
   min-version = "v1.1.3"
 
