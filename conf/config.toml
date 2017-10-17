@@ -1,4 +1,31 @@
 ["enry.sourced.tech"]
-  repository = "dpordomingo/enry"
+  repository = "src-d/enry"
   min-version = "v1.5.2"
-  
+
+["spark-api.sourced.tech"]
+  repository = "dpordomingo/spark-api"
+  min-version = "v0.0.10"
+
+["go-siva.sourced.tech"]
+  repository = "dpordomingo/go-siva"
+  min-version = "v1.1.3"
+
+["bblf.sh"]
+  repository = "bblfsh/bblfshd"
+  min-version = "v2.1.1"
+
+["sdk.bblf.sh"]
+  repository = "dpordomingo/sdk"
+  min-version = "v1.2.0"
+
+["dashboard.bblf.sh"]
+  repository = "dpordomingo/dashboard"
+  min-version = "v0.3.0"
+
+["client-scala.bblf.sh"]
+  repository = "dpordomingo/client-scala"
+  min-version = "v1.0.1"
+
+["go-git.sourced.tech"]
+  repository = "dpordomingo/go-git"
+  min-version = "v4.0.0"
