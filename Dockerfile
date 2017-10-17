@@ -8,6 +8,8 @@ RUN echo "alias ll='ls -la'" >> ~/.bashrc && \
     ln -s /root/.yarn/bin/yarn /bin/yarn && \
     curl -o- -L https://yarnpkg.com/install.sh | bash
 
+RUN echo ok > /var/www/public/healthcheck
+
 # Install java
 RUN apk --update add openjdk7-jre
 
