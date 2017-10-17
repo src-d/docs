@@ -37,9 +37,3 @@ examples:
     items:
       - item: "[Basic+Example.ipynb](basic/Basic+Example.ipynb)"
 home:
-  - name: Quick start
-    url: "#quick-start"
-  - name: enry
-    url: "#enry"
-  - name: license
-    url: "#license"
