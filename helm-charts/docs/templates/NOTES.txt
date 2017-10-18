@@ -1,0 +1,8 @@
+
+You can now access the documentation sites:
+{{- range $host :=  .Values.ingress.hosts }}
+    http://{{ $host }}
+{{- end }}
+
+NOTE: It may take a few minutes for the Ingress IP to be available.
+      Watch the status with: 'kubectl describe ingress {{ template "fullname" . }}'
