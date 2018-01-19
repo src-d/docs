@@ -14,7 +14,7 @@ html_theme_options = {
   'show_powered_by': False,
   'extra_nav_links': {
     'Go back to source{d}': 'https://sourced.tech',
-    'Follow us on twitter': 'https://twitter.com/srcd_'
+    'Follow us on twitter': 'https://twitter.com/sourcedtech'
   },
   'github_user': '@USER_NAME',
   'github_repo': '@PROJECT_NAME',
