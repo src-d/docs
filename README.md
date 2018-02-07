@@ -1,4 +1,4 @@
-# Docummentation site generator
+# Documentation site generator
 
 **Docs** serves the source{d} documentation sites using our common global service [docsrv](https://github.com/src-d/docsrv)
 
