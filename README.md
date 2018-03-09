@@ -35,7 +35,7 @@ where:
 - **hostname**: hostname under the docs will be served. It must match the `project.hostname` as defined in [data/categories.yml](../hugo/data/categories.yml)
 - **version**: version of the project as being in `sources_path`
 
-## example:
+### example:
 
 To serve the go-git documentation you need to have:
 - the go-git repo downloaded under `$GOSRC/gopkg.in/src-d/go-git.v4`,
@@ -51,3 +51,24 @@ export VERSION_NAME=v.4;
 SERVE=true make docs-site-serve;
 ```
 and go to http://go-git.sourced.tech:8585
+
+
+## Deploy
+
+The project is not integrated with the CI/CD system, so it must be built and deployed manually:
+
+```shell
+login=<your_docker_registry_login>
+repo_host=quay.io
+repo_url=${repo_host}/srcd/docs
+tag=`git rev-parse --short HEAD`
+repo_url_tag=${repo_url}:${tag}
+repo_url_latest=${repo_url}:latest
+
+make build &&
+docker build -t ${repo_url_tag} . &&
+docker tag ${repo_url_tag} ${repo_url_latest} &&
+docker login ${repo_host} --username ${login} &&
+docker push ${repo_url_tag} &&
+docker push ${repo_url_latest}
+```
