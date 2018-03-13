@@ -35,7 +35,7 @@ where:
 - **hostname**: hostname under the docs will be served. It must match the `project.hostname` as defined in [data/categories.yml](../hugo/data/categories.yml)
 - **version**: version of the project as being in `sources_path`
 
-## example:
+### example:
 
 To serve the go-git documentation you need to have:
 - the go-git repo downloaded under `$GOSRC/gopkg.in/src-d/go-git.v4`,
@@ -51,3 +51,47 @@ export VERSION_NAME=v.4;
 SERVE=true make docs-site-serve;
 ```
 and go to http://go-git.sourced.tech:8585
+
+
+## Build and deploy
+
+The project is not integrated with our CI/CD system, so it must be built and deployed manually:
+
+### Build
+
+The image can be built with the following commands:
+
+```shell
+login=<your_docker_registry_login>
+repo_host=quay.io
+repo_url=${repo_host}/srcd/docs
+tag=`git rev-parse --short HEAD`
+repo_url_tag=${repo_url}:${tag}
+repo_url_latest=${repo_url}:latest
+
+make build &&
+docker build -t ${repo_url_tag} . &&
+docker tag ${repo_url_tag} ${repo_url_latest} &&
+docker login ${repo_host} --username ${login} &&
+docker push ${repo_url_tag} &&
+docker push ${repo_url_latest}
+```
+
+### Deploy
+
+The project can be deployed with the following commands:
+
+```shell
+tag=<docker_image_tag> # it can be obtained on the previous build step, or from https://quay.io/repository/srcd/docs?tab=tags
+docs_repo=https://github.com/src-d/docs.git
+repo_name=docs
+hosts='{engine.sourced.tech,enry.sourced.tech,siva.sourced.tech,bblf.sh}'
+global_ip_mame=docsrv-production
+
+git clone ${docs_repo} ${repo_name}
+cd ${repo_name}/helm-charts/docs
+helm upgrade docs . --install --set \
+ingress.hosts="${hosts}",\
+ingress.globalStaticIpName=${global_ip_mame},\
+image.tag="${tag}"
+```
