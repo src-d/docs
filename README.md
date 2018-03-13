@@ -53,9 +53,13 @@ SERVE=true make docs-site-serve;
 and go to http://go-git.sourced.tech:8585
 
 
-## Deploy
+## Build and deploy
 
-The project is not integrated with the CI/CD system, so it must be built and deployed manually:
+The project is not integrated with our CI/CD system, so it must be built and deployed manually:
+
+### Build
+
+The image can be built with the following commands:
 
 ```shell
 login=<your_docker_registry_login>
@@ -71,4 +75,23 @@ docker tag ${repo_url_tag} ${repo_url_latest} &&
 docker login ${repo_host} --username ${login} &&
 docker push ${repo_url_tag} &&
 docker push ${repo_url_latest}
+```
+
+### Deploy
+
+The project can be deployed with the following commands:
+
+```shell
+tag=<docker_image_tag> # it can be obtained on the previous build step, or from https://quay.io/repository/srcd/docs?tab=tags
+docs_repo=https://github.com/src-d/docs.git
+repo_name=docs
+hosts='{engine.sourced.tech,enry.sourced.tech,siva.sourced.tech,bblf.sh}'
+global_ip_mame=docsrv-production
+
+git clone ${docs_repo} ${repo_name}
+cd ${repo_name}/helm-charts/docs
+helm upgrade docs . --install --set \
+ingress.hosts="${hosts}",\
+ingress.globalStaticIpName=${global_ip_mame},\
+image.tag="${tag}"
 ```
