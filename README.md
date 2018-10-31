@@ -1,4 +1,13 @@
-# Documentation site generator
+# DEPRECATED PROJECT
+
+This project is deprecated;
+sourced.tech documentation will be served from https://docs.sourced.tech/intro/
+
+---
+
+---
+
+## Documentation site generator
 
 **Docs** serves the source{d} documentation sites using our common global service [docsrv](https://github.com/src-d/docsrv)
 
